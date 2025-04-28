@@ -1,16 +1,38 @@
 package model;
 
-public abstract class Pet {
+public class Pet {
 	
 	private String name;
 	private String species;
 	private String type;
 	private int age;
+	private int id;
 	boolean adopted;
+	
+	public Pet(String name, String species, String type, int age, boolean adopted, int id) {
+		this.name = name;
+		this.species = species;
+		this.type = type;
+		this.age = age;
+		this.adopted = adopted;
+		this.id = id;
+	}
+	
+	public Pet() {
+		super();
+	}
 	
 	public boolean isAdopted() {
 		return adopted;
 	}
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	public void setAdopted(boolean adopted) {
 		this.adopted = adopted;
 	}
@@ -37,6 +59,12 @@ public abstract class Pet {
 	}
 	public void setType(String type) {
 		this.type = type;
+	}
+
+	@Override
+	public String toString() {
+		return "Pet [name=" + name + ", species=" + species + ", type=" + type + ", age=" + age + ", id=" + id
+				+ ", adopted=" + adopted + "]";
 	}
 		
 }
