@@ -1,0 +1,23 @@
+[
+  {
+    "uniqueId": "exo001",
+    "animalName": "Zazu",
+    "category": "Bird",
+    "subSpecies": "Toucan",
+    "yearsOld": 4
+  },
+  {
+    "uniqueId": "exo002",
+    "animalName": "Kaa",
+    "category": "Reptile",
+    "subSpecies": "Python",
+    "yearsOld": 6
+  },
+  {
+    "uniqueId": "exo003",
+    "animalName": "Iggy",
+    "category": "Reptile",
+    "subSpecies": "Iguana",
+    "yearsOld": 2
+  }
+]
