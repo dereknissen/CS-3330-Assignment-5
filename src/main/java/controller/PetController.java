@@ -3,12 +3,12 @@ package controller;
 import model.*;
 import view.MainView;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import main.Main;
 
 import javax.swing.*;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -19,6 +19,7 @@ import java.util.List;
 public class PetController {
     private Shelter<Pet> shelter;
     private MainView view;
+    private String lastSavedFile = null; // Track the last saved file
 
     public PetController(Shelter<Pet> shelter, MainView view) {
         this.shelter = shelter;
@@ -105,6 +106,7 @@ public class PetController {
         String filename = timestamp + " pets.json";
         try (FileWriter writer = new FileWriter("src/main/resources/" + filename)) {
             gson.toJson(shelter.getPets(), writer);
+            lastSavedFile = filename; // Store the last saved filename
             JOptionPane.showMessageDialog(view, "Pets saved to " + filename);
         } catch (IOException e) {
             e.printStackTrace();
@@ -139,17 +141,32 @@ public class PetController {
      */
     public void loadPetsFromFile() {
         shelter.clearShelter();
-        List<Pet> regPets = Main.readRegPets("src/main/resources/animals/pets.json");
-        if (regPets != null) {
-            regPets.forEach(shelter::addAnimal);
-        }
-        List<ExoticAnimal> exoticPets = Main.readExoticPets("src/main/resources/animals/exotic_animals.json");
-        if (exoticPets != null) {
-            exoticPets.forEach(pet -> {
-                ExoticAnimalAdapter wrappedExoticPet = new ExoticAnimalAdapter(pet);
-                wrappedExoticPet.sync();
-                shelter.addAnimal(wrappedExoticPet);
-            });
+        // Load from the last saved file if it exists, otherwise use the original files
+        if (lastSavedFile != null) {
+            Gson gson = new Gson();
+            try (BufferedReader reader = new BufferedReader(new FileReader("src/main/resources/" + lastSavedFile))) {
+                List<Pet> savedPets = gson.fromJson(reader, new TypeToken<List<Pet>>(){}.getType());
+                if (savedPets != null) {
+                    savedPets.forEach(shelter::addAnimal);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(view, "Error loading from saved file.");
+            }
+        } else {
+            // Load from original files if no saved file exists
+            List<Pet> regPets = Main.readRegPets("src/main/resources/animals/pets.json");
+            if (regPets != null) {
+                regPets.forEach(shelter::addAnimal);
+            }
+            List<ExoticAnimal> exoticPets = Main.readExoticPets("src/main/resources/animals/exotic_animals.json");
+            if (exoticPets != null) {
+                exoticPets.forEach(pet -> {
+                    ExoticAnimalAdapter wrappedExoticPet = new ExoticAnimalAdapter(pet);
+                    wrappedExoticPet.sync();
+                    shelter.addAnimal(wrappedExoticPet);
+                });
+            }
         }
         view.refreshPetList(shelter.getPets());
         JOptionPane.showMessageDialog(view, "Pets loaded from files.");
