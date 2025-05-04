@@ -1,4 +1,4 @@
-package model;
+package main;
 
 import java.awt.Window.Type;
 import java.io.BufferedReader;

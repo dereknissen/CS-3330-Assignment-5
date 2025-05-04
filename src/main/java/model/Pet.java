@@ -1,6 +1,6 @@
 package model;
 
-public class Pet {
+public class Pet implements Comparable<Pet> {
 	
 	private String name;
 	private String species;
@@ -66,5 +66,11 @@ public class Pet {
 		return "Pet [name=" + name + ", species=" + species + ", type=" + type + ", age=" + age + ", id=" + id
 				+ ", adopted=" + adopted + "]";
 	}
+	
+	@Override
+	public int compareTo(Pet other) {
+	    return this.getName().compareToIgnoreCase(other.getName());
+	}
+
 		
 }
