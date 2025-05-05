@@ -172,30 +172,48 @@ public class PetController {
         JOptionPane.showMessageDialog(view, "Pets loaded from files.");
     }
 
+    /**
+     * Handles add pet button from view to controller
+     */
     private void handleAddPet() {
         Pet pet = view.getPetFromForm();
         addPet(pet);
     }
 
+    /**
+     * Handles adopt pet button from view to controller
+     */
     private void handleAdoptPet() {
         int petId = view.getPetIdForAdopt();
         if (petId != -1) adoptPet(petId);
     }
 
+    /**
+     * Handles remove pet button from view to controller
+     */
     private void handleRemovePet() {
         int petId = view.getPetIdForRemoval();
         if (petId != -1) removePet(petId);
     }
 
+    /**
+     * Handles sorting pets from view to controller
+     */
     private void handleSortPets() {
         String criteria = view.getSortCriteria();
         sortPets(criteria);
     }
 
+    /**
+     * Save pets to file button from view to controller
+     */
     private void handleSavePets() {
         savePetsToFile();
     }
 
+    /**
+     * Load pets from file
+     */
     private void handleLoadPets() {
         loadPetsFromFile();
     }

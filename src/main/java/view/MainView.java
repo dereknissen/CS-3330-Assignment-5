@@ -184,10 +184,45 @@ public class MainView extends JFrame {
         }
     }
 
-    public JButton getAddPetButton() { return addPetButton; }
-    public JButton getAdoptPetButton() { return adoptPetButton; }
-    public JButton getRemovePetButton() { return removePetButton; }
-    public JButton getSortButton() { return sortButton; }
-    public JButton getSaveButton() { return saveButton; }
-    public JButton getLoadButton() { return loadButton; }
+    /**
+     * @return addPetButton
+     */
+    public JButton getAddPetButton() {
+    	return addPetButton;
+    }
+    
+    /**
+     * @return adoptPetButton
+     */
+    public JButton getAdoptPetButton() {
+    	return adoptPetButton;
+    }
+    
+    /**
+     * @return removePetButton
+     */
+    public JButton getRemovePetButton() {
+    	return removePetButton;
+    }
+    
+    /**
+     * @return sortButton
+     */
+    public JButton getSortButton() {
+    	return sortButton;
+    }
+    
+    /**
+     * @return saveButton
+     */
+    public JButton getSaveButton() {
+    	return saveButton;
+    }
+    
+    /**
+     * @return loadButton
+     */
+    public JButton getLoadButton() {
+    	return loadButton;
+    }
 }
