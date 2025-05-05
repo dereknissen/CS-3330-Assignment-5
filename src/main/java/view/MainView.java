@@ -24,6 +24,9 @@ public class MainView extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
+        // Main North Panel to hold form and instruction
+        JPanel northPanel = new JPanel(new BorderLayout());
+        
         // Form Panel
         JPanel formPanel = new JPanel(new GridLayout(6, 2, 5, 5));
         formPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -50,7 +53,14 @@ public class MainView extends JFrame {
         formPanel.add(new JLabel("Sort By:"));
         sortComboBox = new JComboBox<>(new String[]{"name", "age", "species"});
         formPanel.add(sortComboBox);
-        add(formPanel, BorderLayout.NORTH);
+        northPanel.add(formPanel, BorderLayout.NORTH);
+
+        // Instruction Panel
+        JPanel instructionPanel = new JPanel();
+        instructionPanel.add(new JLabel("Please enter Id to adopt, remove, or view details of a pet."));
+        northPanel.add(instructionPanel, BorderLayout.CENTER);
+
+        add(northPanel, BorderLayout.NORTH);
 
         // Buttons Panel
         JPanel buttonPanel = new JPanel();
@@ -165,7 +175,7 @@ public class MainView extends JFrame {
     }
 
     /**
-     * Displays details of a pet in a dialog.
+     * Displays details of a pet in a dialog using the pet's toString method.
      * @param pet The pet to display.
      */
     public void displayPetDetails(Pet pet) {

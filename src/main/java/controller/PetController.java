@@ -3,11 +3,14 @@ package controller;
 import model.*;
 import view.MainView;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import main.Main;
 
 import javax.swing.*;
+
+import java.awt.Dimension;
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -61,11 +64,52 @@ public class PetController {
      * @param petId The ID of the pet to adopt.
      */
     public void adoptPet(int petId) {
+        Pet pet = shelter.getPetById(petId);
+        
+        if (pet == null) {
+            JOptionPane.showMessageDialog(view, 
+                "Error: Pet with ID " + petId + " was not found in the shelter.",
+                "Pet Not Found",
+                JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        if (pet.isAdopted()) {
+            // Special dialog for already adopted pets
+            String message = "This pet has already been adopted!\n\n" +
+                             "Name: " + pet.getName() + "\n" +
+                             "Species: " + pet.getSpecies() + "\n" +
+                             "Type: " + pet.getType() + "\n" +
+                             "Age: " + pet.getAge() + "\n\n" +
+                             "Would you like to see other available pets?";
+                             
+            int choice = JOptionPane.showConfirmDialog(
+                view,
+                message,
+                "Pet Already Adopted",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.INFORMATION_MESSAGE
+            );
+            
+            if (choice == JOptionPane.YES_OPTION) {
+                // Show available pets
+                showAvailablePets();
+            }
+            return;
+        }
+        
+        // Pet is available for adoption
         if (shelter.adoptPet(petId)) {
             view.refreshPetList(shelter.getPets());
-            JOptionPane.showMessageDialog(view, "Pet with ID " + petId + " has been adopted.");
+            JOptionPane.showMessageDialog(view, 
+                "Congratulations! You've successfully adopted " + pet.getName() + ".",
+                "Adoption Successful",
+                JOptionPane.INFORMATION_MESSAGE);
         } else {
-            JOptionPane.showMessageDialog(view, "Pet already adopted or not found.");
+            JOptionPane.showMessageDialog(view, 
+                "An error occurred during the adoption process.",
+                "Adoption Error",
+                JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -101,16 +145,22 @@ public class PetController {
      * Saves the current list of pets to a timestamped JSON file.
      */
     public void savePetsToFile() {
-        Gson gson = new Gson();
-        String timestamp = new SimpleDateFormat("yyyyMMdd HHmmss").format(new Date());
-        String filename = timestamp + " pets.json";
+        // Create a Gson builder with configuration to handle circular references
+        GsonBuilder gsonBuilder = new GsonBuilder()
+            .excludeFieldsWithoutExposeAnnotation()  // Only include fields with @Expose annotation
+            .setPrettyPrinting();                    // Make the JSON output more readable
+        
+        Gson gson = gsonBuilder.create();
+        String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String filename = timestamp + "_pets.json";
+        
         try (FileWriter writer = new FileWriter("src/main/resources/" + filename)) {
             gson.toJson(shelter.getPets(), writer);
             lastSavedFile = filename; // Store the last saved filename
             JOptionPane.showMessageDialog(view, "Pets saved to " + filename);
         } catch (IOException e) {
             e.printStackTrace();
-            JOptionPane.showMessageDialog(view, "Error saving pets to file.");
+            JOptionPane.showMessageDialog(view, "Error saving pets to file: " + e.getMessage());
         }
     }
 
@@ -198,5 +248,45 @@ public class PetController {
 
     private void handleLoadPets() {
         loadPetsFromFile();
+    }
+    
+    /**
+     * Shows a list of available pets (not adopted) in a dialog
+     */
+    private void showAvailablePets() {
+        StringBuilder availablePetsInfo = new StringBuilder();
+        boolean hasAvailablePets = false;
+        
+        availablePetsInfo.append("Available Pets for Adoption:\n\n");
+        
+        for (Pet pet : shelter.getPets()) {
+            if (!pet.isAdopted()) {
+                availablePetsInfo.append("ID: ").append(pet.getId())
+                    .append(" | Name: ").append(pet.getName())
+                    .append(" | Species: ").append(pet.getSpecies())
+                    .append(" | Age: ").append(pet.getAge())
+                    .append("\n");
+                hasAvailablePets = true;
+            }
+        }
+        
+        if (!hasAvailablePets) {
+            availablePetsInfo.append("Sorry, there are currently no pets available for adoption.");
+        }
+        
+        JTextArea textArea = new JTextArea(availablePetsInfo.toString());
+        textArea.setEditable(false);
+        textArea.setLineWrap(true);
+        textArea.setWrapStyleWord(true);
+        
+        JScrollPane scrollPane = new JScrollPane(textArea);
+        scrollPane.setPreferredSize(new Dimension(400, 300));
+        
+        JOptionPane.showMessageDialog(
+            view,
+            scrollPane,
+            "Available Pets",
+            JOptionPane.INFORMATION_MESSAGE
+        );
     }
 }

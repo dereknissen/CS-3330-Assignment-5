@@ -1,0 +1,66 @@
+[
+  {
+    "name": "Zazu",
+    "species": "Bird",
+    "type": "Toucan",
+    "age": 4,
+    "id": 46059,
+    "adopted": false
+  },
+  {
+    "name": "DogGuy",
+    "species": "Dog",
+    "type": "Pood",
+    "age": 2,
+    "id": 101,
+    "adopted": false
+  },
+  {
+    "name": "Thumper",
+    "species": "Dutch",
+    "type": "Rabbit",
+    "age": 1,
+    "id": 3,
+    "adopted": false
+  },
+  {
+    "name": "Shadow",
+    "species": "German Shepherd",
+    "type": "Dog",
+    "age": 5,
+    "id": 4,
+    "adopted": false
+  },
+  {
+    "name": "Buddy",
+    "species": "Golden Retriever",
+    "type": "Dog",
+    "age": 3,
+    "id": 1,
+    "adopted": false
+  },
+  {
+    "name": "Iggy",
+    "species": "Reptile",
+    "type": "Iguana",
+    "age": 2,
+    "id": 46057,
+    "adopted": false
+  },
+  {
+    "name": "Kaa",
+    "species": "Reptile",
+    "type": "Python",
+    "age": 6,
+    "id": 46058,
+    "adopted": true
+  },
+  {
+    "name": "Whiskers",
+    "species": "Siamese",
+    "type": "Cat",
+    "age": 2,
+    "id": 2,
+    "adopted": false
+  }
+]

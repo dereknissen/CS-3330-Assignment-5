@@ -1,99 +1,67 @@
 package model;
 
+import com.google.gson.annotations.Expose;
+
 public class ExoticAnimal extends Pet {
-	
-	private String uniqueId;
-	private String animalName;
-	private String category;
-	private String subSpecies;
-	private int yearsOld;
-	
-	/**
-	 * Default constructor
-	 */
-	public ExoticAnimal() {
-		super();
-	}
 
-	/**
-	 * @return pet id
-	 */
-	public String getUniqueId() {
-		return uniqueId;
-	}
+    @Expose
+    private String uniqueId;
+    @Expose
+    private String animalName;
+    @Expose
+    private String category;
+    @Expose
+    private String subSpecies;
+    @Expose
+    private int yearsOld;
 
-	/**
-	 * Sets pet id
-	 * @param uniqueId
-	 */
-	public void setUniqueId(String uniqueId) {
-		this.uniqueId = uniqueId;
-	}
+    public ExoticAnimal() {
+        super();
+    }
 
-	/**
-	 * @return animal name
-	 */
-	public String getAnimalName() {
-		return animalName;
-	}
+    public String getUniqueId() {
+        return uniqueId;
+    }
 
-	/**
-	 * Sets animal name
-	 * @param animalName
-	 */
-	public void setAnimalName(String animalName) {
-		this.animalName = animalName;
-	}
+    public void setUniqueId(String uniqueId) {
+        this.uniqueId = uniqueId;
+    }
 
-	/**
-	 * @return pet category
-	 */
-	public String getCategory() {
-		return category;
-	}
+    public String getAnimalName() {
+        return animalName;
+    }
 
-	/**
-	 * Sets pet category
-	 * @param category
-	 */
-	public void setCategory(String category) {
-		this.category = category;
-	}
+    public void setAnimalName(String animalName) {
+        this.animalName = animalName;
+    }
 
-	/**
-	 * @return pet subspecies
-	 */
-	public String getSubSpecies() {
-		return subSpecies;
-	}
+    public String getCategory() {
+        return category;
+    }
 
-	/**
-	 * Set pet subspecies
-	 * @param subSpecies
-	 */
-	public void setSubSpecies(String subSpecies) {
-		this.subSpecies = subSpecies;
-	}
+    public void setCategory(String category) {
+        this.category = category;
+    }
 
-	/**
-	 * @return pet age in years
-	 */
-	public int getYearsOld() {
-		return yearsOld;
-	}
+    public String getSubSpecies() {
+        return subSpecies;
+    }
 
-	/**
-	 * Set pet age in years
-	 * @param yearsOld
-	 */
-	public void setYearsOld(int yearsOld) {
-		this.yearsOld = yearsOld;
-	}
-	
-	/**
-	 * Converts pet data to a string
-	 */
-	public String toString() {
-		return super.toString();
-	}
+    public void setSubSpecies(String subSpecies) {
+        this.subSpecies = subSpecies;
+    }
+
+    public int getYearsOld() {
+        return yearsOld;
+    }
+
+    public void setYearsOld(int yearsOld) {
+        this.yearsOld = yearsOld;
+    }
+
+    @Override
+    public String toString() {
+        return "ExoticAnimal [uniqueId=" + uniqueId + ", animalName=" + animalName + ", category=" + category
+                + ", subSpecies=" + subSpecies + ", yearsOld=" + yearsOld + "]";
+    }
 }

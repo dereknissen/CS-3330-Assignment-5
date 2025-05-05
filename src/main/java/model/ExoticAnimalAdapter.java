@@ -1,54 +1,65 @@
 package model;
 
+import com.google.gson.annotations.Expose;
+
 /**
- * Adapter class to convert an ExoticAnimal into a Pet for use in the shelter.
+ * Adapter class to convert ExoticAnimal objects to Pet objects.
  */
 public class ExoticAnimalAdapter extends Pet {
-	
-	private ExoticAnimal animal = null;
-	private Shelter<Pet> shelter;
-	
-	/**
-	 * Constructs an ExoticAnimalAdapter with a reference to the shelter.
-	 * @param animal The ExoticAnimal to adapt.
-	 * @param shelter The shelter to check for ID conflicts.
-	 */
-	public ExoticAnimalAdapter(ExoticAnimal animal, Shelter<Pet> shelter) {
-		this.animal = animal;
-		this.shelter = shelter;
-	}
-	
-	/**
-	 * This method will sync the Pet parent class to the attributes inside of the exotic animal.
-	 */
-	public void sync() {
-		this.setAge(animal.getYearsOld());
-		this.setAdopted(false);
-		this.setName(animal.getAnimalName());
-		this.setSpecies(animal.getSubSpecies());
-		this.setType(animal.getCategory());
-		
-		// Extract numeric ID from uniqueId
-		String temp = "";
-		for (int i = 0; i < animal.getUniqueId().length(); i++) {
-			if (Character.isDigit(animal.getUniqueId().charAt(i))) {
-				temp += animal.getUniqueId().charAt(i);
-			}
-		}
-		int idNumber = Integer.parseInt(temp);
-		
-		// Check if the ID already exists in the shelter
-		while (shelter.getPetById(idNumber) != null) {
-			// Find the maximum ID in the shelter and increment
-			int maxId = 0;
-			for (Pet pet : shelter.getPets()) {
-				if (pet.getId() > maxId) {
-					maxId = pet.getId();
-				}
-			}
-			idNumber = maxId + 1;
-		}
-		
-		this.setId(idNumber);
-	}
+    
+    @Expose(serialize = false)
+    private transient ExoticAnimal exoticAnimal;
+    
+    @Expose(serialize = false)
+    private transient Shelter<Pet> shelter;
+    
+    /**
+     * Creates a new ExoticAnimalAdapter.
+     * @param exoticAnimal The ExoticAnimal to adapt.
+     * @param shelter The shelter where the pet is housed.
+     */
+    public ExoticAnimalAdapter(ExoticAnimal exoticAnimal, Shelter<Pet> shelter) {
+        super(exoticAnimal.getAnimalName(), 
+              exoticAnimal.getCategory(), 
+              exoticAnimal.getSubSpecies(), 
+              exoticAnimal.getYearsOld(), 
+              false, 
+              generateNumericId(exoticAnimal.getUniqueId()));
+        this.exoticAnimal = exoticAnimal;
+        this.shelter = shelter;
+    }
+    
+    /**
+     * Generates a numeric ID from a string ID by hashing it
+     * @param stringId The string ID to convert
+     * @return A numeric ID
+     */
+    private static int generateNumericId(String stringId) {
+        if (stringId == null) return 0;
+        // Try to parse as integer first
+        try {
+            return Integer.parseInt(stringId);
+        } catch (NumberFormatException e) {
+            // If not a number, use hashCode as fallback
+            return Math.abs(stringId.hashCode()) % 100000; // Limit to 5 digits
+        }
+    }
+    
+    /**
+     * Syncs the exotic animal data with the adapter.
+     */
+    public void sync() {
+        setName(exoticAnimal.getAnimalName());
+        setSpecies(exoticAnimal.getCategory());
+        setType(exoticAnimal.getSubSpecies());
+        setAge(exoticAnimal.getYearsOld());
+        setId(generateNumericId(exoticAnimal.getUniqueId()));
+    }
+    
+    /**
+     * @return The ExoticAnimal being adapted.
+     */
+    public ExoticAnimal getExoticAnimal() {
+        return exoticAnimal;
+    }
 }
