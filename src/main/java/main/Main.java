@@ -32,7 +32,7 @@ public class Main {
         List<ExoticAnimal> exoticPets = readExoticPets("src/main/resources/animals/exotic_animals.json");
         if (exoticPets != null) {
             for (ExoticAnimal pet : exoticPets) {
-                ExoticAnimalAdapter wrappedExoticPet = new ExoticAnimalAdapter(pet);
+                ExoticAnimalAdapter wrappedExoticPet = new ExoticAnimalAdapter(pet, petShelter);
                 wrappedExoticPet.sync();
                 petShelter.addAnimal(wrappedExoticPet);
             }

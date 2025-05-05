@@ -33,6 +33,7 @@ public class MainView extends JFrame {
         typeField = new JTextField(10);
         ageField = new JTextField(10);
         idField = new JTextField(10);
+        idField.setBackground(new Color(255, 255, 204)); // Light yellow background to highlight
 
         formPanel.add(new JLabel("Name:"));
         formPanel.add(nameField);
@@ -42,7 +43,9 @@ public class MainView extends JFrame {
         formPanel.add(typeField);
         formPanel.add(new JLabel("Age:"));
         formPanel.add(ageField);
-        formPanel.add(new JLabel("ID:"));
+        JLabel idLabel = new JLabel("ID:");
+        idLabel.setFont(new Font(idLabel.getFont().getName(), Font.BOLD, 14)); // Larger, bold font for ID label
+        formPanel.add(idLabel);
         formPanel.add(idField);
         formPanel.add(new JLabel("Sort By:"));
         sortComboBox = new JComboBox<>(new String[]{"name", "age", "species"});
